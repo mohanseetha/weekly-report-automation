@@ -54,13 +54,13 @@ if df_filtered.empty:
     exit(0)
 
 saved_files = {}
-consolidated_filename = f"Weekly_Latecomers_{monday.strftime('%Y-%m-%d')}_to_{saturday.strftime('%Y-%m-%d')}.xlsx"
+consolidated_filename = f"Weekly_Latecomers_{monday.strftime('%d-%m-%Y')}_to_{saturday.strftime('%d-%m-%Y')}.xlsx"
 
 with pd.ExcelWriter(consolidated_filename, engine="xlsxwriter") as writer:
     for dept, email in dept_mappings.items():
         df_dept = df_filtered[df_filtered['department'] == dept]
         if not df_dept.empty:
-            dept_filename = f"{dept}_weekly_latecomers_{monday.strftime('%Y-%m-%d')}.xlsx"
+            dept_filename = f"{dept}_weekly_latecomers_{monday.strftime('%d-%m-%Y')}.xlsx"
             df_dept.to_excel(writer, sheet_name=dept, index=False)
             df_dept.to_excel(dept_filename, index=False)
             saved_files[dept] = dept_filename
@@ -89,8 +89,8 @@ def send_email(receiver_email, subject, body, attachment_path):
 
 for dept, email in dept_mappings.items():
     if email and dept in saved_files:
-        send_email(email, f"Weekly Latecomers Report - {dept} ({monday.strftime('%Y-%m-%d')} to {saturday.strftime('%Y-%m-%d')})",
-                   "Attached is the list of students who were late on 3 or more unique days this week.", saved_files[dept])
+        send_email(email, f"Weekly Latecomers Report - {dept} ({monday.strftime('%d-%m-%Y')} to {saturday.strftime('%d-%m-%Y')})",
+                   "Attached is the list of students who were late on 3 or more days this week.", saved_files[dept])
 
-send_email(ALL_MAIL, f"Weekly Latecomers Consolidated Report ({monday.strftime('%Y-%m-%d')} to {saturday.strftime('%Y-%m-%d')})",
-           "Attached is the consolidated latecomers' report for all departments.", consolidated_filename)
+send_email(ALL_MAIL, f"Weekly Latecomers Consolidated Report ({monday.strftime('%d-%m-%Y')} to {saturday.strftime('%d-%m-%Y')})",
+           "Attached is the consolidated latecomer's report of all departments.", consolidated_filename)

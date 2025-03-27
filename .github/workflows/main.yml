@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pymongo certifi pandas smtplib python-dotenv openpyxl
+          pip install pymongo certifi pandas python-dotenv openpyxl
 
       - name: Run Weekly Report Script
         env:

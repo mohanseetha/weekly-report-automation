@@ -2,7 +2,7 @@ name: Weekly Latecomers Report
 
 on:
   schedule:
-    - cron: '30 3 * * 1'
+    - cron: '0 9 * * 6'
   workflow_dispatch:
 
 jobs:
